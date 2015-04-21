@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestHelper", "TestHelper\TestHelper.vcxproj", "{DBF696A5-8575-4D3D-A33E-E31FBE2341EE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PIHelper", "PrepareImage\PrepareImage.vcxproj", "{C6DB6CF7-5195-4CD0-AFD9-11DB32BA46F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBF696A5-8575-4D3D-A33E-E31FBE2341EE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DBF696A5-8575-4D3D-A33E-E31FBE2341EE}.Debug|Win32.Build.0 = Debug|Win32
+		{DBF696A5-8575-4D3D-A33E-E31FBE2341EE}.Debug|x64.ActiveCfg = Debug|Win32
+		{DBF696A5-8575-4D3D-A33E-E31FBE2341EE}.Release|Win32.ActiveCfg = Release|Win32
+		{DBF696A5-8575-4D3D-A33E-E31FBE2341EE}.Release|Win32.Build.0 = Release|Win32
+		{DBF696A5-8575-4D3D-A33E-E31FBE2341EE}.Release|x64.ActiveCfg = Release|Win32
+		{C6DB6CF7-5195-4CD0-AFD9-11DB32BA46F6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C6DB6CF7-5195-4CD0-AFD9-11DB32BA46F6}.Debug|Win32.Build.0 = Debug|Win32
+		{C6DB6CF7-5195-4CD0-AFD9-11DB32BA46F6}.Debug|x64.ActiveCfg = Debug|Win32
+		{C6DB6CF7-5195-4CD0-AFD9-11DB32BA46F6}.Release|Win32.ActiveCfg = Release|Win32
+		{C6DB6CF7-5195-4CD0-AFD9-11DB32BA46F6}.Release|Win32.Build.0 = Release|Win32
+		{C6DB6CF7-5195-4CD0-AFD9-11DB32BA46F6}.Release|x64.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
