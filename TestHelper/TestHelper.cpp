@@ -42,10 +42,10 @@ void readDataFromDir(int* numOfSamples, std::string trainDir, std::string testDi
 			training_classes.push_back(classlabel);
 
 			cv::Mat curImg = cv::imread(file->path().string(), CV_LOAD_IMAGE_GRAYSCALE);
-			cv::Mat processed;
+			//cv::Mat processed;
 			
-			cv::resize(curImg, processed, goalSize);
-			training_data.push_back(processed);
+			//cv::resize(curImg, processed, goalSize);
+			training_data.push_back(curImg);
 			//cv::imshow("Check", cv::imread(file->path().string()));
 			//cv::waitKey(100);
 			
@@ -65,9 +65,9 @@ void readDataFromDir(int* numOfSamples, std::string trainDir, std::string testDi
 			testing_classes.push_back(classlabel);
 			
 			cv::Mat curImg = cv::imread(file->path().string(), CV_LOAD_IMAGE_GRAYSCALE);
-			cv::Mat processed;
-			cv::resize(curImg, processed, goalSize);
-			testing_data.push_back(processed);
+			//cv::Mat processed;
+			//cv::resize(curImg, processed, goalSize);
+			testing_data.push_back(curImg);
 			
 		}
 	}

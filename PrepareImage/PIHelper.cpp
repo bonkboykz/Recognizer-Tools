@@ -18,7 +18,7 @@ std::string trainFileName, testFileName;
 void readImages(string filename, bool isTest) 
 {
 	ofstream myfile;
-	myfile.open((isTest) ? trainFileName : testFileName);
+	myfile.open((!isTest) ? trainFileName : testFileName);
 	myfile.clear();
 	cout << "Reading Images" << endl;
 	using namespace boost::filesystem;
@@ -35,6 +35,10 @@ void readImages(string filename, bool isTest)
 		{
 			cv::Mat curImg = cv::imread(file->path().string(), CV_LOAD_IMAGE_GRAYSCALE);
 			cv::Mat processed;
+			goalSize = cv::Size(150, 150);
+			cv::resize(curImg, processed, goalSize);
+			cv::imwrite((!isTest) ? "trainPrep\\" + file->path().filename().string() : "testPrep\\" + file->path().filename().string(), processed);
+			goalSize = cv::Size(24, 24);
 			cv::resize(curImg, processed, goalSize);
 			//processed.convertTo(processed, CV_8UC1, 1.0 / 255.5);
 			//processed.convertTo(processed, CV_32FC1);
