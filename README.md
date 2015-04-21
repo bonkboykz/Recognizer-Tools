@@ -8,4 +8,3 @@ To implement this tools I used:
 So, to use Recognizer-Tools you will need just to execute precompilled binaries in CMD.
 
 To actually build project you must setup framerok and dependencies in your IDE.
-> Make it better
