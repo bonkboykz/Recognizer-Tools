@@ -37,7 +37,7 @@ void readDataFromDir(int* numOfSamples, std::string trainDir, std::string testDi
 		{
 			string filestring = file->path().filename().string();
 			int classlabel = stoi(filestring.substr(filestring.length() - 6, 1));
-			classlabel--;
+			//classlabel--;
 			if (classlabel > 4) continue;
 			training_classes.push_back(classlabel);
 
@@ -60,7 +60,7 @@ void readDataFromDir(int* numOfSamples, std::string trainDir, std::string testDi
 		{
 			string filestring = file->path().filename().string();
 			int classlabel = stoi(filestring.substr(filestring.length() - 6, 1));
-			classlabel--;
+			//classlabel--;
 			if (classlabel > 4) continue;
 			testing_classes.push_back(classlabel);
 			
@@ -86,7 +86,7 @@ void eigenFaceCheck()
 	//cout << "Threshold: "; cin >> threshold;
 	cv::Ptr<cv::FaceRecognizer> fr = cv::createEigenFaceRecognizer(numOfSamples);
 	tick = boost::posix_time::second_clock::local_time();
-	cout << "Using training database: " << trainDir << endl;
+	cout << "Using training database: " << trainDir << "\tNumber of training samples: " << training_data.size() << endl;
 	fr->train(training_data, training_classes);
 	cv::Mat test_sample;
 	int correct_class = 0;
@@ -150,7 +150,7 @@ void lbpCheck()
 	//cout << "Threshold: "; cin >> threshold;
 	cv::Ptr<cv::FaceRecognizer> fr = cv::createLBPHFaceRecognizer();
 	tick = boost::posix_time::second_clock::local_time();
-	cout << "Using training database: " << trainDir << endl;
+	cout << "Using training database: " << trainDir << "\tNumber of training samples: " << training_data.size() << endl;
 	fr->train(training_data, training_classes);
 
 	cv::Mat test_sample;
@@ -205,26 +205,43 @@ void lbpCheck()
 using namespace cv;
 
 #define NUMBER_OF_TRAINING_SAMPLES 42
+int numberOfTrainingSamples;
 #define ATTRIBUTES_PER_SAMPLE 576
 #define NUMBER_OF_TESTING_SAMPLES 3
+int numberOFTestingSamples;
+void countTheNumberOfLines(std::string filename, bool isTest)
+{
+	int numberOfLines = 0;
+	std::string curLine;
+	ifstream filestream(filename);
+	while (std::getline(filestream, curLine))
+	{
+		//qDebug() << QString::fromStdString(line);
+		numberOfLines++;
+	}
+	filestream.clear();
+	filestream.seekg(0, std::ios::beg);
+	//numberOfLines--;
 
-int readDataFromCSV(std::string filename, Mat data, Mat classes,
-	int n_samples)
+	if (isTest) numberOFTestingSamples = numberOfLines;
+	else numberOfTrainingSamples = numberOfLines;
+}
+int readDataFromCSV(std::string filename, Mat data, Mat classes, int n_samples)
 {
 
 	int classlabel; // the class label
 	float tmpf;
+	
+	
 
-	// if we can't read the input file then return 0
-	//FILE* f = fopen(filename, "r");
 	ifstream filestream(filename);
+	
 	if (!filestream.is_open())
 	{
 		printf("ERROR: cannot read file %s\n", filename);
 		return 0; // all not OK
 	}
-
-	// for each sample in the file
+	
 	using namespace std;
 
 	for (int line = 0; line < n_samples; line++)
@@ -243,16 +260,17 @@ int readDataFromCSV(std::string filename, Mat data, Mat classes,
 
 				//fscanf(f, "%f,", &tmpf);
 				filestream >> tmpf;
+				//cout << tmpf << " ";
 				data.at<float>(line, attribute) = tmpf;
 
 			}
 			else if (attribute == ATTRIBUTES_PER_SAMPLE)
 			{
 
-				// attribute 256 is the class label {0 ... 9}
 
 				//fscanf(f, "%i,", &classlabel);
 				filestream >> classlabel;
+				//cout << "classlabel " << classlabel << endl;
 				//cout << "classlabel:"<< classlabel << endl;
 				classes.at<float>(line, classlabel) = 1.0;
 			}
@@ -260,7 +278,6 @@ int readDataFromCSV(std::string filename, Mat data, Mat classes,
 		//cout << endl;
 	}
 
-	//fclose(f);
 	filestream.close();
 	return 1; // all OK
 }
@@ -269,26 +286,28 @@ void nnCheck()
 {
 
 
-	Mat training_data = Mat(NUMBER_OF_TRAINING_SAMPLES, ATTRIBUTES_PER_SAMPLE, CV_32FC1);
-	Mat training_classifications = Mat(NUMBER_OF_TRAINING_SAMPLES, NUMBER_OF_CLASSES, CV_32FC1);
 
-	// define testing data storage matrices
-
-	Mat testing_data = Mat(NUMBER_OF_TESTING_SAMPLES, ATTRIBUTES_PER_SAMPLE, CV_32FC1);
-	Mat testing_classifications = Mat::zeros(NUMBER_OF_TESTING_SAMPLES, NUMBER_OF_CLASSES, CV_32FC1);
-
-
-	// define classification output vector
 
 	Mat classificationResult = Mat(1, NUMBER_OF_CLASSES, CV_32FC1);
 	Point max_loc = Point(0, 0);
 	std::string trainCSV ,testCSV;
-	// load training and testing data sets
+
 	cout << "Write train and test CSV names" << endl;
 	cout << "Train CSV: "; cin >> trainCSV;
 	cout << "Test CSV: "; cin >> testCSV;
-	if (readDataFromCSV(trainCSV, training_data, training_classifications, NUMBER_OF_TRAINING_SAMPLES) &&
-		readDataFromCSV(testCSV, testing_data, testing_classifications, NUMBER_OF_TESTING_SAMPLES))
+	
+	countTheNumberOfLines(trainCSV, false);
+	countTheNumberOfLines(testCSV, true);
+	
+	Mat training_data = Mat(numberOfTrainingSamples, ATTRIBUTES_PER_SAMPLE, CV_32FC1);
+	Mat training_classifications = Mat(numberOfTrainingSamples, NUMBER_OF_CLASSES, CV_32FC1);
+
+
+	Mat testing_data = Mat(numberOFTestingSamples, ATTRIBUTES_PER_SAMPLE, CV_32FC1);
+	Mat testing_classifications = Mat::zeros(numberOFTestingSamples, NUMBER_OF_CLASSES, CV_32FC1);
+
+	if (readDataFromCSV(trainCSV, training_data, training_classifications, numberOfTrainingSamples) &&
+		readDataFromCSV(testCSV, testing_data, testing_classifications, numberOFTestingSamples))
 	{
 
 
@@ -307,7 +326,7 @@ void nnCheck()
 			0.1,
 			0.1);
 		tick = boost::posix_time::second_clock::local_time();
-		cout << "Using training database: " << trainCSV << endl;
+		cout << "Using training database: " << trainCSV << "\tNumber of training samples: " << training_data.rows << endl;
 		int iterations = nnetwork->train(training_data, training_classifications, Mat(), Mat(), params);
 
 		cout << "Training iterations " << iterations << endl;
@@ -319,7 +338,8 @@ void nnCheck()
 		int false_positives[NUMBER_OF_CLASSES] = { 0, 0, 0, 0, 0};
 
 		cout << "Using testing database: " << testCSV << endl;
-		for (int tsample = 0; tsample < NUMBER_OF_TESTING_SAMPLES; tsample++)
+		
+		for (int tsample = 0; tsample < numberOFTestingSamples; tsample++)
 		{
 
 
@@ -350,14 +370,14 @@ void nnCheck()
 
 		cout << "Results on the testing database: " << testCSV << endl;
 		cout << "\tCorrect classification: " << correct_class << " ";
-		cout << "(" << (double)correct_class * 100 / NUMBER_OF_TESTING_SAMPLES << ")" << endl;
+		cout << "(" << (double)correct_class * 100 / numberOFTestingSamples << ")" << endl;
 		cout << "\tWrong classifications: " << wrong_class << " ";
-		cout << "(" << (double)wrong_class * 100 / NUMBER_OF_TESTING_SAMPLES << ")" << endl;
+		cout << "(" << (double)wrong_class * 100 / numberOFTestingSamples << ")" << endl;
 		for (int i = 0; i < NUMBER_OF_CLASSES; i++)
 		{
 			printf("\tClass (Emotion %d) false postives 	%d (%g%%)\n", i,
 				false_positives[i],
-				(double)false_positives[i] * 100 / NUMBER_OF_TESTING_SAMPLES);
+				(double)false_positives[i] * 100 / numberOFTestingSamples);
 		}
 		now = boost::posix_time::second_clock::local_time();
 		__int64 diff = now.time_of_day().total_milliseconds() - tick.time_of_day().total_milliseconds();

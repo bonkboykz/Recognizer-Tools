@@ -7,7 +7,8 @@
 
 using namespace std;
 cv::Size goalSize;
-bool keepAspectRatio = true;
+bool beginZero = true;
+int posFromEnd = 6;
 string directoryPath = "";
 
 
@@ -44,8 +45,9 @@ void readImages(string filename, bool isTest)
 			//processed.convertTo(processed, CV_32FC1);
 			cv::Mat pointMat = cv::Mat(processed).reshape(1, 1);
 			string filestring = file->path().filename().string();
-			int classlabel = stoi(filestring.substr(filestring.length() - 6, 1));
-			classlabel--;
+			int classlabel = stoi(filestring.substr(filestring.length() - posFromEnd, 1));
+			if (!beginZero) classlabel--;
+
 			//cout << classlabel << endl;
 			//todo realize another classes
 			if (classlabel <= 4)
@@ -105,6 +107,21 @@ int main(int argc, char** argv)
 	cout << "INFO: CSV file will be called \"dir_name\" + txt" << endl;
 	trainFileName = trainDir + ".txt";
 	testFileName = testDir + ".txt";
+	cout << "Labels classification start from zero? Y/N" << endl;
+	char x;
+	cin >> x;
+	if (x == 'Y') beginZero = true;
+	else beginZero = false;
+	cout << "Labels classification pos is on 6th from the end of filename (inc. extension)? Y/N" << endl;
+	cin >> x;
+	if (x == 'Y') posFromEnd = 6;
+	else
+	{
+		int curPos;
+		cout << "Enter the current pos" << endl;
+		cin >> curPos;
+		posFromEnd = curPos;
+	}
 	readImages(trainDir, false);
 	readImages(testDir, true);
 	//system("pause");
