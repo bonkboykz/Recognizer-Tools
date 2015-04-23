@@ -2,17 +2,24 @@
 //
 
 #include "stdafx.h"
+const std::string winName = "Current Image";
+
 using namespace boost::filesystem;
+
+
 std::string concatStrings(std::string curStr, char curClass)
 {
 	std::string curClassStr = "";
 	curClassStr += '(';
 	curClassStr += curClass;
 	curClassStr += ')';
-	curStr.insert(curStr.length() - 7, curClassStr);
+	std::string curStrBegin = curStr.substr(0, curStr.length() - 4);
+	std::string curStrEnd = curStr.substr(curStr.length() - 4, 4);
+	//curStr.insert(curStr.length() - 4, curClassStr);
+	std::string normalString = curStrBegin + curClassStr + curStrEnd;
 	//std::cout << curClassStr << std::endl;
 	//std::cout << curStr << std::endl;
-	return curStr;
+	return normalString;
 }
 void iterateThroughDir(std::string dirName)
 {
@@ -25,8 +32,9 @@ void iterateThroughDir(std::string dirName)
 		{
 			std::string curFileName = file->path().filename().string();
 			cv::Mat curImg = cv::imread(file->path().string(), CV_LOAD_IMAGE_COLOR);
-			cv::imshow("Current Image", curImg);
-			switch (cv::waitKey(30000))
+			cv::imshow(winName, curImg);
+			std::cout << "Choose class: 0, 1, 2, 3, 4" << std::endl;
+			switch (cv::waitKey())
 			{
 			case 27:
 				exit(0);
@@ -53,8 +61,8 @@ void iterateThroughDir(std::string dirName)
 				continue;
 				break;
 			}
-			std::cout << dirName + "Changed" << std::endl;
-			std::string curPathName = dirName + "Changed";
+			//std::cout << dirName + "Done" << std::endl;
+			std::string curPathName = dirName + "Done";
 			boost::filesystem::path curDir(curPathName);
 			if (boost::filesystem::create_directory(curDir))
 				std::cout << "Created folder: " << curPathName << std::endl;
@@ -68,6 +76,8 @@ int main(int argc, char argv[])
 {
 	std::string curDir;
 	cout << "Input directory name: "; cin >> curDir; cout << endl;
+	cv::namedWindow(winName, cv::WINDOW_NORMAL);
+	//cv::setMouseCallback(winName, onMouse, NULL);
 	iterateThroughDir(curDir);
 	cout << "Finished" << endl;
 	return 0;

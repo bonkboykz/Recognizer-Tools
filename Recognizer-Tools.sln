@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PIHelper", "PrepareImage\Pr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageClassificator", "ImageClassificator\ImageClassificator.vcxproj", "{ED4A9B4E-7C71-408D-B260-A384F609B101}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageCropper", "ImageCropper\ImageCropper.vcxproj", "{5FF1D9FD-575E-4E69-8C4D-07DD664F968A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -35,6 +37,12 @@ Global
 		{ED4A9B4E-7C71-408D-B260-A384F609B101}.Release|Win32.ActiveCfg = Release|Win32
 		{ED4A9B4E-7C71-408D-B260-A384F609B101}.Release|Win32.Build.0 = Release|Win32
 		{ED4A9B4E-7C71-408D-B260-A384F609B101}.Release|x64.ActiveCfg = Release|Win32
+		{5FF1D9FD-575E-4E69-8C4D-07DD664F968A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5FF1D9FD-575E-4E69-8C4D-07DD664F968A}.Debug|Win32.Build.0 = Debug|Win32
+		{5FF1D9FD-575E-4E69-8C4D-07DD664F968A}.Debug|x64.ActiveCfg = Debug|Win32
+		{5FF1D9FD-575E-4E69-8C4D-07DD664F968A}.Release|Win32.ActiveCfg = Release|Win32
+		{5FF1D9FD-575E-4E69-8C4D-07DD664F968A}.Release|Win32.Build.0 = Release|Win32
+		{5FF1D9FD-575E-4E69-8C4D-07DD664F968A}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
