@@ -57,7 +57,8 @@ bool doneCropping()
 		cropRect.width = P2.x - P1.x;
 	}
 	std::cout << cropRect.width << " " << cropRect.height << std::endl;
-	if (cropRect.width > 0 && cropRect.height > 0){
+	if (cropRect.width > 0 && cropRect.height > 0)
+	{
 		croppedImg = curImg(cropRect);
 		//cv::destroyWindow(croppingWinName);
 		return 1;
@@ -182,6 +183,7 @@ void iterateThroughDir(std::string dirName)
 				if (!doneCropping()) goto l;
 				break;
 			default:
+				goto l;
 				break;
 			}
 			//std::cout << dirName + "Cropped" << std::endl;
